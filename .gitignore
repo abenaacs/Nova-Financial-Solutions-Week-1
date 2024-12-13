@@ -1,0 +1,12 @@
+data/
+
+__pycache__/
+*.pyc
+.env
+# Virtual environment
+env/
+.venv/
+*.egg-info/
+
+# CI/CD configurations (if sensitive data is used)
+.github/secrets/
