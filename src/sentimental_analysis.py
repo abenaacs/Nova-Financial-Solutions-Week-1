@@ -1,7 +1,7 @@
 from textblob import TextBlob
 
 
-def add_sentiment_analysis(analyst_ratings_df, text_column="Comments"):
+def add_sentiment_analysis(analyst_ratings_df, text_column="headline"):
     """
     Perform sentiment analysis on the comments in analyst ratings.
 
