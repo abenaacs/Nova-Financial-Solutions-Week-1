@@ -1,40 +1,75 @@
-## Purpose
+### **README for `src/` Folder**
 
-The scripts folder contains modular code for running the primary analysis, preprocessing data, and evaluating results.
+This README focuses on the Python scripts, detailing their functionality and how they interconnect.
 
-## Key Script(s)
+````markdown
+# Source Code (`src/`)
 
-1. **run_analysis.py**: The main script to execute the end-to-end analysis.
-2. **analysis.py**: Contains functions for EDA, sentiment analysis, and correlation computation.
+The `src/` directory contains all the Python scripts used in the project. Each script handles a specific part of the pipeline.
 
-## CI/CD Integration
+## Directory Structure
 
-The project includes a CI/CD pipeline to ensure code reliability and maintainability:
+src/
+├── data_loader.py # Functions to load stock and analyst ratings data.
+├── data_processing.py # Functions for merging, cleaning, and enriching data.
+├── eda.py # Exploratory Data Analysis (EDA) functions.
+├── correlation_analysis.py # Functions to calculate and visualize correlations.
+├── feature_engineering.py # Adding technical indicators like SMA, RSI, and MACD.
+├── sentimental_analysis.py # Sentiment analysis using TextBlob.
+├── main.py # Main pipeline that ties everything together.
 
-- **GitHub Actions Workflow**:
-  - Located in `.github/workflows/unittests.yml`.
-  - Automatically runs unit tests on each push or pull request.
-  - Ensures continuous integration by verifying that new code doesn’t break existing functionality.
+markdown
+Copy code
+
+## Key Functions
+
+### `data_loader.py`
+
+- `load_stock_data_from_folder`: Reads stock price data from CSV files in a folder.
+- `load_analyst_ratings`: Loads analyst ratings data and preprocesses it.
+
+### `data_processing.py`
+
+- `merge_stock_and_ratings`: Combines stock data and analyst ratings for analysis.
+
+### `eda.py`
+
+- `plot_stock_prices`: Visualizes closing prices for stocks.
+- `analyst_ratings_summary`: Summarizes and visualizes analyst ratings.
+- `analyze_sentiment`: Performs sentiment analysis on analyst headlines.
+- `perform_topic_modeling`: Extracts topics using LDA.
+
+### `correlation_analysis.py`
+
+- `calculate_correlation`: Calculates and visualizes correlation between sentiment and stock returns.
+
+### `feature_engineering.py`
+
+- `add_technical_indicators`: Adds SMA, RSI, and MACD indicators to stock data.
+
+### `sentimental_analysis.py`
+
+- `add_sentiment_analysis`: Analyzes the sentiment of text headlines using TextBlob.
+
+### `main.py`
+
+The main script that executes the full pipeline:
+
+1. Data Loading
+2. Data Processing
+3. Exploratory Analysis
+4. Sentiment and Technical Analysis
+5. Correlation Analysis
+6. Saving Results
+
+---
 
 ## How to Run
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/username/financial-news-analysis.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd financial-news-analysis
-   ```
-3. Run the main analysis script:
-   ```bash
-   python scripts/run_analysis.py
-   ```
-
-## Testing
-
-Unit tests for key functions are located in the `tests` directory. To run tests, use:
+Run the pipeline using:
 
 ```bash
-pytest tests/
+python main.py
+---
 ```
+````

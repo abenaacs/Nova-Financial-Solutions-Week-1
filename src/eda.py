@@ -8,10 +8,15 @@ from sklearn.decomposition import LatentDirichletAllocation
 
 def plot_stock_prices(stock_data_dict):
     """
-    Plot closing prices for all stocks.
+    Plot the closing prices of stocks over time.
 
     Args:
-        stock_data_dict (dict): Dictionary containing stock dataframes.
+        stock_data_dict (dict): A dictionary where keys are stock symbols and values are
+                                 DataFrames containing stock price data with at least
+                                 'date' and 'close' columns.
+
+    Returns:
+        None
     """
     for stock, df in stock_data_dict.items():
         plt.figure(figsize=(10, 5))
@@ -26,14 +31,15 @@ def plot_stock_prices(stock_data_dict):
 
 def analyst_ratings_summary(analyst_ratings_df, symbol_column="Symbol"):
     """
-    Summarize the analyst ratings data and visualize it.
+    Summarize the analyst ratings for different stocks and visualize the count.
 
     Args:
-        analyst_ratings_df (pd.DataFrame): Analyst ratings dataframe.
-        symbol_column (str): Column containing stock symbols.
+        analyst_ratings_df (pd.DataFrame): DataFrame containing analyst ratings data,
+                                           including a 'Symbol' column for stock symbols.
+        symbol_column (str): The column in the dataframe that contains the stock symbols.
 
     Returns:
-        pd.DataFrame: Summary table for ratings count per stock.
+        pd.DataFrame: A summary table showing the count of ratings for each stock symbol.
     """
     if symbol_column in analyst_ratings_df.columns:
         summary = analyst_ratings_df[symbol_column].value_counts().reset_index()
@@ -56,7 +62,13 @@ def analyst_ratings_summary(analyst_ratings_df, symbol_column="Symbol"):
 
 def analyze_text_length_and_frequency(df):
     """
-    Analyze the length of headlines and the frequency of articles per publisher.
+    Analyze and visualize the length of article headlines.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing article headlines in a 'headline' column.
+
+    Returns:
+        None
     """
     # Headline Length Analysis
     df["headline_length"] = df["headline"].apply(lambda x: len(str(x)))
@@ -72,6 +84,15 @@ def analyze_text_length_and_frequency(df):
 
 
 def analyze_article_per_publisher(df):
+    """
+    Analyze the number of articles published by each publisher and visualize it.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing article data with a 'publisher' column.
+
+    Returns:
+        None
+    """
     articles_per_publisher = df.groupby("publisher").size().sort_values(ascending=False)
     print("\nArticles per Publisher:")
     print(articles_per_publisher)
@@ -86,7 +107,13 @@ def analyze_article_per_publisher(df):
 
 def analyze_sentiment(df):
     """
-    Perform sentiment analysis on headlines and visualize the results.
+    Perform sentiment analysis on article headlines and visualize the sentiment distribution.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing article headlines in a 'headline' column.
+
+    Returns:
+        None
     """
     df["sentiment"] = df["headline"].apply(
         lambda x: TextBlob(str(x)).sentiment.polarity
@@ -112,7 +139,13 @@ def analyze_sentiment(df):
 
 def perform_topic_modeling(df):
     """
-    Perform topic modeling using LDA.
+    Perform topic modeling using Latent Dirichlet Allocation (LDA) on article headlines.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing article headlines in a 'headline' column.
+
+    Returns:
+        None
     """
     vectorizer = TfidfVectorizer(stop_words="english")
     X = vectorizer.fit_transform(df["headline"])
@@ -133,15 +166,18 @@ def perform_topic_modeling(df):
 
 def plot_with_indicators(df, stock_name):
     """
-    Plot stock closing prices with SMA, RSI, and MACD.
+    Plot stock closing prices with technical indicators like SMA, RSI, and MACD.
 
     Args:
-        df (pd.DataFrame): Stock price data with indicators.
-        stock_name (str): Name of the stock.
-    """
-    plt.figure(figsize=(12, 6))
+        df (pd.DataFrame): DataFrame containing stock data with 'date', 'close', 'SMA_20',
+                           'SMA_50', 'RSI', 'MACD', and 'MACD_signal' columns.
+        stock_name (str): Name of the stock to include in the plot title.
 
+    Returns:
+        None
+    """
     # Closing Price with SMAs
+    plt.figure(figsize=(12, 6))
     plt.plot(df["date"], df["close"], label="Close Price", color="blue")
     plt.plot(df["date"], df["SMA_20"], label="SMA 20", color="orange")
     plt.plot(df["date"], df["SMA_50"], label="SMA 50", color="red")
