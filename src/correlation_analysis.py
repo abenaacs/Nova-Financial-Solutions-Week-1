@@ -14,19 +14,28 @@ def calculate_correlation(df):
         None
     """
     try:
+        # Check required columns
         required_columns = ["date", "Sentiment_Polarity", "Daily_Returns"]
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
             print(f"Missing columns: {missing_columns}")
             return
+
+        # Group sentiment and returns by date
         daily_sentiment = df.groupby("date")["Sentiment_Polarity"].mean().reset_index()
         daily_returns = df.groupby("date")["Daily_Returns"].mean().reset_index()
+
+        # Merge sentiment and returns data
         analysis_data = pd.merge(daily_sentiment, daily_returns, on="date")
         print("Merged sentiment and returns data:\n", analysis_data.head())
+
+        # Compute Pearson Correlation
         correlation, _ = pearsonr(
             analysis_data["Sentiment_Polarity"], analysis_data["Daily_Returns"]
         )
         print(f"Pearson Correlation Coefficient: {correlation:.4f}")
+
+        # Visualization
         plt.scatter(
             analysis_data["Sentiment_Polarity"],
             analysis_data["Daily_Returns"],
