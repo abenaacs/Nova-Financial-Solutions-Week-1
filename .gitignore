@@ -10,3 +10,4 @@ env/
 
 # CI/CD configurations (if sensitive data is used)
 .github/secrets/
+processed_data/
